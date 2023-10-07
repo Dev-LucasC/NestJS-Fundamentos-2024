@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Patch } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
@@ -17,6 +17,24 @@ export class UserController {
     @Get(':id')
     async show(@Param() params) {
         return {user:{}, params}
+    }
+
+    @Put(':id') 
+    async update(@Body() body, @Param() params)  {
+        return {
+            method: 'put',
+            body,
+            params
+        }
+    }
+
+    @Patch(':id') 
+    async updatePartial(@Body() body,  @Param() params) {
+        return {
+            method: 'patch',
+            body,
+            params
+        }
     }
 
 }
