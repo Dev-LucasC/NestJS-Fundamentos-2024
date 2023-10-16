@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
+import { UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { Controller, Post, Body, Get, Param, Put, Patch, Delete } from '@nestjs/common';
+
 
 @Controller('users')
 export class UserController {
