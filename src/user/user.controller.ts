@@ -1,12 +1,14 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Post, Body, Get, Param, Put, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Patch, UsePipes, ValidationPipe } from '@nestjs/common';
+import { CreateUserDTO } from './dto/create-user.dto';
 
 @Controller('users')
 export class UserController {
 
     @Post()
-    async create(@Body() body) {
-        return {body};
+    @UsePipes(new ValidationPipe())
+    async create(@Body() createUserDto: CreateUserDTO) {
+        return createUserDto;
     }
 
     @Get()
