@@ -2,6 +2,7 @@
 import { UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { Controller, Post, Body, Get, Param, Put, Patch, Delete } from '@nestjs/common';
+import { UpdatePutUserDTO } from './dto/update-put-user.dto'
 
 
 @Controller('users')
@@ -24,10 +25,11 @@ export class UserController {
     }
 
     @Put(':id') 
-    async update(@Body() body, @Param() params)  {
+    @UsePipes(new ValidationPipe())
+    async update(@Body() {email, name, password}: UpdatePutUserDTO, @Param() params)  {
         return {
             method: 'put',
-            body,
+            email, name, password,
             params
         }
     }
