@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { UsePipes, ValidationPipe } from '@nestjs/common';
+import { ParseIntPipe, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { Controller, Post, Body, Get, Param, Put, Patch, Delete } from '@nestjs/common';
 import { UpdatePutUserDTO } from './dto/update-put-user.dto'
@@ -26,27 +26,27 @@ export class UserController {
 
     @Put(':id') 
     @UsePipes(new ValidationPipe())
-    async update(@Body() {email, name, password}: UpdatePutUserDTO, @Param() params)  {
+    async update(@Body() {email, name, password}: UpdatePutUserDTO, @Param('id', ParseIntPipe) id: number)  {
         return {
             method: 'put',
             email, name, password,
-            params
+            id
         }
     }
 
     @Patch(':id') 
-    async updatePartial(@Body() body,  @Param() params) {
+    async updatePartial(@Body() body,  @Param('id', ParseIntPipe) id: number) {
         return {
             method: 'patch',
             body,
-            params
+            id
         }
     }
 
     @Delete(':id')
-    async delete(@Param() params) {
+    async delete(@Param('id', ParseIntPipe) id: number) {
         return{
-            params
+            id
         }
     }
 
