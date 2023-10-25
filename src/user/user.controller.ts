@@ -4,12 +4,13 @@ import { CreateUserDTO } from './dto/create-user.dto';
 import { Controller, Post, Body, Get, Param, Put, Patch, Delete } from '@nestjs/common';
 import { UpdatePutUserDTO } from './dto/update-put-user.dto'
 import { UserService } from './user.service';
+import { UpdatePatchUserDTO} from './dto/update-patch-user.dto'
 
 
 @Controller('users')
 export class UserController {
 
-    constructor(private readonly userService: UserService){}
+    constructor(private readonly userService: UserService) { }
 
     @Post()
     /*@UsePipes(new ValidationPipe())*/
@@ -27,28 +28,20 @@ export class UserController {
         return this.userService.show(id);
     }
 
-    @Put(':id') 
+    @Put(':id')
     @UsePipes(new ValidationPipe())
-    async update(@Body() {email, name, password}: UpdatePutUserDTO, @Param('id', ParseIntPipe) id: number)  {
-        return {
-            method: 'put',
-            email, name, password,
-            id
-        }
+    async update(@Body() data: UpdatePutUserDTO, @Param('id', ParseIntPipe) id: number) {
+        return this.userService.update(id, data);
     }
 
-    @Patch(':id') 
-    async updatePartial(@Body() body,  @Param('id', ParseIntPipe) id: number) {
-        return {
-            method: 'patch',
-            body,
-            id
-        }
+    @Patch(':id')
+    async updatePartial(@Body() data: UpdatePatchUserDTO, @Param('id', ParseIntPipe) id: number) {
+        return this.userService.updatePartial(id, data);
     }
 
     @Delete(':id')
     async delete(@Param('id', ParseIntPipe) id: number) {
-        return{
+        return {
             id
         }
     }
