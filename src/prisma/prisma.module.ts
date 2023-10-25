@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { Module } from "@nestjs/common";
-import { PrismaService } from "./prisma.service";
+// eslint-disable-next-line prettier/prettier
+import { Module } from '@nestjs/common';
+import { PrismaService } from './prisma.service';
 
 @Module ({
     providers: [PrismaService],
