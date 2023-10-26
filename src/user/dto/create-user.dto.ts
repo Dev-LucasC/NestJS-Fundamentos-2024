@@ -1,14 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { IsString, IsEmail, IsStrongPassword, IsOptional } from "class-validator";
+import { IsString, IsEmail, IsStrongPassword, IsOptional, IsDateString } from "class-validator";
 
 export class CreateUserDTO {
 
     @IsString()
     name: string;
 
-    @IsOptional()
     @IsEmail()
     email: string;
+
+    @IsOptional()
+    @IsDateString()
+    birthAt: string;
 
     @IsStrongPassword({
         minLength: 0,

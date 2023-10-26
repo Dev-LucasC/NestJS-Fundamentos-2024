@@ -31,14 +31,10 @@ export class UserService {
         })
     }
 
-    async update(id: number, {email, name, password}: UpdatePutUserDTO) {
-        console.log({email, name, password});
-        
-        if (email === undefined) {
-            email = '';
-        }
+    async update(id: number, {email, name, password, birthAt}: UpdatePutUserDTO) {        
+    
         return this.prisma.user.update({
-            data: {email, name, password},
+            data: {email, name, password, birthAt: birthAt ? new Date(birthAt) : null},
             where: {
                 id
             }
@@ -46,8 +42,24 @@ export class UserService {
 
     }
 
-    async updatePartial(id: number, data: UpdatePatchUserDTO) {
-        console.log({data});
+    async updatePartial(id: number, {email, name, password, birthAt}: UpdatePatchUserDTO) {
+
+        const data: any = {} 
+
+        if (birthAt) {
+            data.birthAt = new Date(birthAt);
+        }
+
+        if (email) {
+            data.email = email;
+        }
+        if (name) {
+            data.name = name;
+        }
+        if (password) {
+            data.password = password;
+        }
+
         return this.prisma.user.update({
             data,
             where: {
