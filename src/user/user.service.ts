@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { UpdatePutUserDTO } from "./dto/update-put-user.dto";
@@ -31,10 +31,13 @@ export class UserService {
         })
     }
 
-    async update(id: number, {email, name, password, birthAt}: UpdatePutUserDTO) {        
-    
+    async update(id: number, { email, name, password, birthAt }: UpdatePutUserDTO) {
+
+        await this.exists(id);
+
+
         return this.prisma.user.update({
-            data: {email, name, password, birthAt: birthAt ? new Date(birthAt) : null},
+            data: { email, name, password, birthAt: birthAt ? new Date(birthAt) : null },
             where: {
                 id
             }
@@ -42,9 +45,11 @@ export class UserService {
 
     }
 
-    async updatePartial(id: number, {email, name, password, birthAt}: UpdatePatchUserDTO) {
+    async updatePartial(id: number, { email, name, password, birthAt }: UpdatePatchUserDTO) {
+        
+        await this.exists(id);
 
-        const data: any = {} 
+        const data: any = {}
 
         if (birthAt) {
             data.birthAt = new Date(birthAt);
@@ -65,6 +70,24 @@ export class UserService {
             where: {
                 id
             }
+        });
+    }
+
+    async delete(id: number) {
+
+        await this.exists(id);
+
+        return this.prisma.user.delete({
+            where: {
+                id
+            }
         })
     }
+
+    async exists(id: number) {
+        if (!(await this.show(id))) {
+            throw new NotFoundException(`O usuario ${id} não existe`)
+        }
+    }
 }
+
