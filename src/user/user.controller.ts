@@ -1,12 +1,13 @@
 /* eslint-disable prettier/prettier */
-import { ParseIntPipe, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ParseIntPipe, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { Controller, Post, Body, Get, Param, Put, Patch, Delete } from '@nestjs/common';
 import { UpdatePutUserDTO } from './dto/update-put-user.dto'
 import { UserService } from './user.service';
 import { UpdatePatchUserDTO} from './dto/update-patch-user.dto'
+import { LogInterceptor } from 'src/interceptors/log.interceptors';
 
-
+@UseInterceptors(LogInterceptor)
 @Controller('users')
 export class UserController {
 
